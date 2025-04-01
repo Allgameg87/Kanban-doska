@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Продвинутая Kanban-доска: IT-обучение и карьера</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --critical: #e74c3c;
+            --priority: #f39c12;
+            --normal: #f1c40f;
+            --plan: #2ecc71;
+            --bg-task: #f8f9fa;
+            --card-border: #ddd;
+            --card-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: var(--bg-task);
+            color: var(--primary-color);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 2rem;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: bold;
+        }
+
+        .kanban-column {
+            min-width: 250px;
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .kanban-card {
+            background: white;
+            border-radius: 4px;
+            padding: 0.8rem;
+            margin: 0.5rem 0;
+            position: relative;
+            transition: transform 0.2s ease;
+            box-shadow: var(--card-shadow);
+        }
+
+        .kanban-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .kanban-card .priority {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--critical);
+        }
+
+        .priority.priority-2 { background: var(--priority); }
+        .priority.priority-3 { background: var(--normal); }
+        .priority.priority-4 { background: var(--plan); }
+
+        .kanban-card .title {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .kanban-card .description {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .wi-p {
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 0.5rem;
+        }
+
+        .legend {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: var(--bg-task);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+        }
+
+        .legend h3 {
+            margin: 0 0 1rem;
+            color: var(--primary-color);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+        }
+
+        .legend-dot.critical { background: var(--critical); }
+        .legend-dot.priority { background: var(--priority); }
+        .legend-dot.normal { background: var(--normal); }
+        .legend-dot.plan { background: var(--plan); }
+
+        /* Дополнительные стили */
+        .category-icon {
+            margin-right: 0.5rem;
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center; color: var(--primary-color);">Kanban-доска</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Категория</th>
+                <th>Назначено (WiP ≤ 4)</th>
+                <th>В работе (WiP ≤ 3)</th>
+                <th>На проверке (WiP ≤ 2)</th>
+                <th>Готово</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Категория: Обучение -->
+            <tr>
+                <td>
+                    <div class="kanban-column">
+                        <div class="category-icon"><i class="fas fa-laptop-code"></i></div>
+                        <div class="kanban-card">
+                            <div class="priority priority-1"></div>
+                            <div class="title">Алгоритмы и структуры данных</div>
+                            <div class="description">Полное освоение курса на Coursera</div>
+                        </div>
+                        <div class="kanban-card">
+                            <div class="priority priority-2"></div>
+                            <div class="title">Обучение Docker и Kubernetes</div>
+                            <div class="description">Создание контейнеризированного приложения</div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="kanban-column">
+                        <div class="kanban-card">
+                            <div class="priority priority-3"></div>
+                            <div class="title">Подготовка к AWS Certified Solutions Architect</div>
+                            <div class="description">Прохождение экзамена</div>
+                        </div>
+                        <div class="kanban-card">
+                            <div class="priority priority-4"></div>
+                            <div class="title">Изучение Machine Learning</div>
+                            <div class="description">Проект: предсказание продаж</div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="kanban-column">
+                        <div class="kanban-card">
+                            <div class="priority priority-1"></div>
+                            <div class="title">Разработка API на FastAPI</div>
+                            <div class="description">Проект для портфолио</div>
+                        </div>
+                        <div class="kanban-card">
+                            <div class="priority priority-2"></div>
+                            <div class="title">Автоматизация тестирования</div>
+                            <div class="description">Создание CI/CD пайплайна</div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="kanban-column">
+                        <div class="kanban-card">
+                            <div class="priority priority-3"></div>
+                            <div class="title">Ревью кода коллег</div>
+                            <div class="description">Участие в peer-review</div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="kanban-column">
+                        <div class="kanban-card">
+                            <div class="priority priority-4"></div>
+                            <div class="title">Сертификат по DevOps</div>
+                            <div class="description">Выдано Udemy</div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+
+            <!-- Категория: Карьера -->
+            <tr>
+                <td>
+                    <div class="kanban-column">
+                        <div class="category-icon"><i class="fas fa-briefcase"></i></div>
+                        <div class="kanban-card">
+                            <div class="priority priority-1"></div>
+                            <div class="title">Подготовка к собеседованию</div>
+                            <div class="description">Интервью с HR-менеджерами</div>
+                        </div>
+                        <div class="kanban-card">
+                            <div class="priority priority-2"></div>
+                            <div class="title">Поиск работы в Big Tech</div>
+                            <div class="description">Отклик на вакансии Google/Amazon</div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="kanban-column">
+                        <div class="kanban-card">
+                            <div class="priority priority-3"></div>
+                            <div class="title">Увеличение зарплаты</div>
+                            <div class="description">Обсуждение с руководством</div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="kanban-column">
+                        <div class="kanban-card">
+                            <div class="priority priority-1"></div>
+                            <div class="title">Создание портфолио</div>
+                            <div class="description">Верстка сайта на React</div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="kanban-column">
+                        <div class="kanban-card">
+                            <div class="priority priority-4"></div>
+                            <div class="title">Смена позиции</div>
+                            <div class="description">Смена должности с Junior на Middle</div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+
+            <!-- Категория: Проекты -->
+            <tr>
+                <td>
+                    <div class="kanban-column">
+                        <div class="category-icon"><i class="fas fa-project-diagram"></i></div>
+                        <div class="kanban-card">
+                            <div class="priority priority-1"></div>
+                            <div class="title">Разработка CRM-системы</div>
+                            <div class="description">Создание MVP для клиента</div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="kanban-column">
+                        <div class="kanban-card">
+                            <div class="priority priority-2"></div>
+                            <div class="title">Миграция на AWS</div>
+                            <div class="description">Перенос инфраструктуры</div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="kanban-column">
+                        <div class="kanban-card">
+                            <div class="priority priority-3"></div>
+                            <div class="title">Тестирование системы</div>
+                            <div class="description">Создание тест-кейсов</div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="kanban-column">
+                        <div class="kanban-card">
+                            <div class="priority priority-4"></div>
+                            <div class="title">Запуск проекта</div>
+                            <div class="description">Сдача клиенту</div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Легенда и WiP -->
+    <div class="legend">
+        <h3>Легенда</h3>
+        <div class="legend-item">
+            <div class="legend-dot critical"></div>
+            <span>Критичные задачи (Красный)</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-dot priority"></div>
+            <span>Приоритетные задачи (Оранжевый)</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-dot normal"></div>
+            <span>Обычные задачи (Желтый)</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-dot plan"></div>
+            <span>Плановые задачи (Зеленый)</span>
+        </div>
+        <div class="wi-p">
+            WiP-ограничения:
+            <br>
+            - Назначено: максимум 4 задачи
+            <br>
+            - В работе: максимум 3 задачи
+            <br>
+            - На проверке: максимум 2 задачи
+            <br>
+            - Готово: не ограничено
+        </div>
+    </div>
+</body>
+</html>
